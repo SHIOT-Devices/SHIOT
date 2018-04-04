@@ -1,14 +1,28 @@
 'use strict';
 
 const express = require('express');
-const Router = express.Router();
-const User = require('..model/user.js');
+const router = express.Router();
+const User = require('../model/user.js');
 const storage = require('../lib/storage.js');
+const bodyParser = require('body-parser').json();
 
-// Router.get()
+router.get('/user', (request, response) => {
+  if (request.query.id) {
+    let id = request.query.id;
+    storage.get(id)
+      .then(song => {
+        response.send(song);
+      });
+  } else {
+    storage.getAll()
+      .then(users => {
+        response.send(users);
+      });
+  };
+});
 
 
-Router.post('/user', (request, response) => {
+router.post('/user', bodyParser, (request, response) => {
   let user = {
     username: request.body.username,
     password: request.body.password
@@ -16,15 +30,16 @@ Router.post('/user', (request, response) => {
 
   storage.save(user)
     .then(user => {
-      response.status('Status 200 ',200);
+      console.log('passed saved function')
+      response.status(200);
       response.send(user);
     });
 });
 
 
-// Router.put()
+// router.put()
 
 
-// Router.delete()
+// router.delete()
 
 module.exports = router;
