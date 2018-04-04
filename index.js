@@ -6,8 +6,10 @@ const PORT = process.env.PORT || 3000;
 const routes = require('./router/router.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-// dotenv.load();
+const dotenv = require('dotenv');
+// mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/midProject');
+dotenv.load();
 
 require('./lib/storage.js');
 
