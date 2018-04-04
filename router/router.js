@@ -31,7 +31,7 @@ router.get('/admin', (request, response) => {
 });
 
 
-router.post('/user', bodyParser, (request, response) => {
+router.post('/user', (request, response) => {
   let user = {
     username: request.body.username,
     password: request.body.password
@@ -46,9 +46,44 @@ router.post('/user', bodyParser, (request, response) => {
 });
 
 
-// router.put()
+//PUT
+router.put('/user', (request, response) => {
+  console.log('router.PUT hit');
+  let id = request.query.id;
+  console.log('REQUEST.BODY ',request.body);
+  storage.get(id)
+    .then(user => {
+      console.log('router.js-55', user);
+      if(request.body.username) {
+        user.username = request.body.username;
+      }
+      if(request.body.password) {
+        user.password = request.body.password;
+      }
 
+      user.save((error, user) => {
+        if(error) {
+          throw(error);
+        };
+        response.send(user);
+      });
+    });
+});
 
-// router.delete()
+//DELETE
+router.delete('/user', (request, response) => {
+  if(request.query.id) {
+    let id = request.query.id;
+    storage.remove(id)
+      .then(user => {
+        response.send(`User Removed ${user}`);
+      });
+  } else {
+    storage.removeAll()
+      .then(users => {
+        response.send(`All Users Removed ${users}`);
+      });
+  };
+});
 
 module.exports = router;

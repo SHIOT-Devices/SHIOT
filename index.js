@@ -13,9 +13,9 @@ dotenv.load();
 
 require('./lib/storage.js');
 
-app.use('/', routes);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+app.use('/', routes);//Used AFTER body-parser stuff
 
 app.use((request, response) => {
   //have the server send back something
