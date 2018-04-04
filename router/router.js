@@ -14,11 +14,20 @@ router.get('/user', (request, response) => {
         response.send(song);
       });
   } else {
-    storage.getAll()
-      .then(users => {
-        response.send(users);
-      });
+    // storage.getAll()
+    //   .then(users => {
+    //     response.send(users);
+    //   });
+    console.error(error);
+    console.log('this user is not SHIoT');
   };
+});
+
+router.get('/admin', (request, response) => {
+  storage.getAll()
+    .then(users => {
+      response.send(users);
+    });
 });
 
 
@@ -30,7 +39,7 @@ router.post('/user', bodyParser, (request, response) => {
 
   storage.save(user)
     .then(user => {
-      console.log('passed saved function')
+      console.log('passed saved function');
       response.status(200);
       response.send(user);
     });
