@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 let userSchema = new mongoose.Schema({
   username: String,
   password: String
+  // admin: false
 });
 
 let User = mongoose.model('User', userSchema);

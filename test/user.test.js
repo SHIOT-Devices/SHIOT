@@ -24,4 +24,12 @@ describe('/user', () => {
         done();
       });
   });
+
+describe('/user', () => {
+  it('should return a user matched with the username query', (done) => {
+    let params = getUserParams();
+    superagent.get(SIGNUP_URL)
+  })
+})
+
 });
