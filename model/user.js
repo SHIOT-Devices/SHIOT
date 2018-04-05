@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const createError = require('http-errors');
 
 
 
@@ -47,17 +48,18 @@ userSchema.methods.generateFindToken = function() {
     let tries = 0;
     //recersive function call
     //.call lets you use the this keyword here
-    _generateToken.call(this);
-    function _generateToken(){
+    generateFindToken.call(this);
+    function generateFindToken(){
       //creating 32 bit hex token 
       this.findToken = crypto.randomBytes(32).toString('hex');
+      console.log('token', this.findToken);
       this.save()
       .then(() => resolve(this.findToken))
       .catch( err =>{
         //will call this 3 times in case there's network issues
         if(tries > 3) return reject(err);
-        tries++
-        _generateToken.call(this);
+        tries++;
+        generateFindToken.call(this);
       });
     }
   });
@@ -67,7 +69,7 @@ userSchema.methods.generateToken = function(){
   return new Promise((resolve, reject)=>{
     this.generateFindToken()
     // signes token and secret key
-    .then( findToken = resolve(jwt.sign({token: findToken}, process.env.SECRET)))
+    .then( findToken => resolve(jwt.sign({token: findToken}, process.env.SECRET)))
     .catch( err => reject(err));
   });
 };
