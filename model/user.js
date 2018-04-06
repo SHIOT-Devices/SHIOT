@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const createError = require('http-errors');
-
+require('dotenv').config();
 
 
 //find token authorizes us to use specific routes 
@@ -52,26 +52,30 @@ userSchema.methods.generateFindToken = function() {
     function generateFindToken(){
       //creating 32 bit hex token 
       this.findToken = crypto.randomBytes(32).toString('hex');
-      console.log('token', this.findToken);
-      this.save()
-      .then(() => resolve(this.findToken))
-      .catch( err =>{
-        //will call this 3 times in case there's network issues
-        if(tries > 3) return reject(err);
-        tries++;
-        generateFindToken.call(this);
-      });
-    }
+      console.log('token seed', this.findToken);
+      this.save();
+      
+      console.log('58 obj', this); 
+      return resolve(this.findToken);
+      
+      
+    };
   });
 };
 //this will apply the token to the user obj
 userSchema.methods.generateToken = function(){
   return new Promise((resolve, reject)=>{
+    console.log('68 obj',this);
     this.generateFindToken()
     // signes token and secret key
-    .then( findToken => resolve(jwt.sign({token: findToken}, process.env.SECRET)))
+    .then( findToken =>{
+      console.log('74 obj', this);
+      console.log('seeeeecret', process.env.SECRET)
+      return resolve(jwt.sign({tokenSeed: findToken}, process.env.SECRET));
+    })
     .catch( err => reject(err));
   });
+  console.log('76, user', this);
 };
 
 let User = mongoose.model('User', userSchema);

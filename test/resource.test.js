@@ -8,6 +8,8 @@ require('jest');
 
 const url = 'http://localhost:3000';
 
+let tempToken = undefined;
+
 const testUser = {
   username: 'Jainway ' + Math.random(),
   password: 'engage'
@@ -35,7 +37,8 @@ describe('Resource routes', function(){
         return user.generateToken();
       })
       .then( token => {
-        this.tempToken = token;
+        console.log('resource-40 TOKEN: ', token);
+        tempToken = token;
         done();
       })
       .catch(done);
@@ -44,9 +47,7 @@ describe('Resource routes', function(){
     it('should return a resource', done =>{
       request.post(`${url}/api/resource`)
       .send(testResource)
-      .set({
-        Authorization: `Bearer ${this.tempToken}`
-      })
+      .set('Authorization',`Bearer ${tempToken}`)
       .end((err, res) => {
         if(err) return done(err);
         expect(res.status).toEqual(200);
@@ -65,7 +66,7 @@ describe('Resource routes', function(){
         return user.generateToken();
       })
       .then( token =>{
-        this.tempToken = token;
+        tempToken = token;
         done();
       })
       .catch(done);
@@ -81,12 +82,12 @@ describe('Resource routes', function(){
       .catch(done);
     });
     afterEach(() => {
-      delete testResource.userId
+      delete testResource.userId;
     });
     it('should return a resource', done => {
       request.get(`${url}/api/${this.tempResource._id}`)
       .set({
-        Authorization: `Bearer ${this.tempToken}`
+        Authorization: `Bearer ${tempToken}`
       })
       .end((err, res) => {
         if(err) return done(err);
@@ -98,5 +99,5 @@ describe('Resource routes', function(){
     });
   });
 });
-
+//test//
 
