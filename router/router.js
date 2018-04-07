@@ -57,7 +57,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) =>{
 //TODO:fillout
 //passing basicAuth to check the authheader, see basic-auth-middlewear
 //token is not here yet
-User.findOne({ username: req.auth.username})
+  User.findOne({ username: req.auth.username})
 .then( user => user.compareHashedPassword(req.auth.password))
 .then( user => user.generateToken())
 .then( token => res.send(token))

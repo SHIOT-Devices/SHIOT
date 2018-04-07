@@ -70,7 +70,8 @@ userSchema.methods.generateToken = function(){
     // signes token and secret key
     .then( findToken =>{
       console.log('74 obj', this);
-      console.log('seeeeecret', process.env.SECRET)
+      console.log('75 obj', findToken);
+      console.log('seeeeecret', process.env.SECRET); 
       return resolve(jwt.sign({tokenSeed: findToken}, process.env.SECRET));
     })
     .catch( err => reject(err));
