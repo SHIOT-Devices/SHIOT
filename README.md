@@ -13,11 +13,16 @@ Secure Hash Internet of Things Device
 
 # Desired Features
 - Have application start when the deivce does. (run application as service).
+- First run setup wizard.
+- - set admin username and password
+- - set device name
+- - set server address
 - Front page login when first accessing device.
 - users section for control of device which is only available when user is authenticated.
 - allow software LED control from only authenticated requests.
 - admin section where new users and admins can be added to the device.
 - Create log of when LED status is changed and by who (either button or IP of host).
+- Refactor GPIO assignments from hard code to constructors pulling information from a config.json file.
 - "eventually" grapical user interface for 7in TFT touch screen module.
 - POE ethernet control.
 - powerline ethernet conrol.
@@ -28,6 +33,7 @@ Secure Hash Internet of Things Device
 - control windows
 - monitor temperature
 - fire and harmful gas detectors
+- humidity detectors
 - security cameras with controls
 - home autimation ability
 - home security controls and intigration
