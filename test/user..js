@@ -20,7 +20,7 @@ const testUser = {
 describe('/user', () => {
   it('should return status 200 with successful request', (done) => {
     // let params = getUserParams();
-    superagent.post(USER_URL)
+    return superagent.post(USER_URL)
       .set('Content-Type', 'application/json')
       .send(testUser)
       .then(res => {

@@ -1,5 +1,6 @@
 'use strict';
-
+//This router is for creating a new user
+//and signing in
 const express = require('express');
 const Router = express.Router;
 const User = require('../model/user.js');
@@ -57,8 +58,9 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) =>{
 //TODO:fillout
 //passing basicAuth to check the authheader, see basic-auth-middlewear
 //token is not here yet
-  User.findOne({ username: req.auth.username})
-.then( user => user.compareHashedPassword(req.auth.password))
+ 
+  User.findOne({username: req.auth.username})
+.then( user => user.comparePasswordHash(req.auth.password))
 .then( user => user.generateToken())
 .then( token => res.send(token))
 .catch(next);
