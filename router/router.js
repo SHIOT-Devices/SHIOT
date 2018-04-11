@@ -14,7 +14,6 @@ const bodyParser = require('body-parser').json();
 
  
 authRouter.post('/api/signup', bodyParser, (req, res, next) => {
-
   let password = req.body.password;
   delete req.body.password;
 
@@ -34,7 +33,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) =>{
 //passing basicAuth to check the authheader, see basic-auth-middlewear
 //token is not here yet
   User.findOne({ username: req.auth.username})
-.then( user => user.compareHashedPassword(req.auth.password))
+.then( user => user.generatePasswordHash(req.auth.password))
 .then( user => user.generateToken())
 .then( token => res.send(token))
 .catch(next);

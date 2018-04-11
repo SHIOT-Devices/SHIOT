@@ -41,46 +41,46 @@ describe('handel token less request', () =>{
 
 });
 
-// describe('handel valid authorization', () =>{
-//   test('sends 200 for authroized GET request made with a valid id', (done) =>{
-//     let newUser = getUserParams();
-//     let token;
-//     let postId;
-//     superagent.post(SERVER_URL + '/api/signup')
-//         .set('Content-Type', 'application/json')
-//         .auth(newUser.username, newUser.password)
-//         .send(JSON.stringify(newUser))
-//         .end((err, res) => {
-//           console.log('Res', res.body, res.auth);
-//           let userId = res.body._id;
-//           //SIGNIN ROUTE 
-//           superagent.get(SERVER_URL + '/api/signin')
-//           .set('Content-Type', 'application/json')
-//           .auth(newUser.username, newUser.password)
-//           .end((err, res) => {
-//             let newPost = {
-//               name: 'wat' + Math.random(),
-//               userId: userId
+describe('handel valid authorization', () =>{
+  test('sends 200 for authroized GET request made with a valid id', (done) =>{
+    let newUser = getUserParams();
+    let token;
+    let postId;
+    superagent.post(SERVER_URL + '/api/signup')
+        .set('Content-Type', 'application/json')
+        .auth(newUser.username, newUser.password)
+        .send(JSON.stringify(newUser))
+        .end((err, res) => {
+          console.log('Res', res.body, res.auth);
+          let userId = res.body._id;
+          //SIGNIN ROUTE 
+          superagent.get(SERVER_URL + '/api/signin')
+          .set('Content-Type', 'application/json')
+          .auth(newUser.username, newUser.password)
+          .end((err, res) => {
+            let newPost = {
+              name: 'wat' + Math.random(),
+              userId: userId
               
-//             };
+            };
             
-//             token = res.body.token;
-//             superagent.post(SERVER_URL + '/api/resource')
-//             .set('Content-type', 'application/json')
-//             .set('Authorization', 'Bearer' + token)
-//             .send(newPost)
-//             .end((err, res) => {
-//               postId = res.body.id;
+            token = res.body.token;
+            superagent.post(SERVER_URL + '/api/resource')
+            .set('Content-type', 'application/json')
+            .set('Authorization', 'Bearer' + token)
+            .send(newPost)
+            .end((err, res) => {
+              postId = res.body.id;
               
-//               superagent.get(SERVER_URL + '/api/resource?id' + postId)
-//               .set('Authorization', 'Bearer' + token)
-//               .end((err, res) =>{
-//                 expect(res.body.name).toBe('wat');
-//                 expect(res.status).toBe(200);
-//                 done();
-//               });
-//             });
-//           });
-//         });
-//   });
-// });
+              superagent.get(SERVER_URL + '/api/resource?id' + postId)
+              .set('Authorization', 'Bearer' + token)
+              .end((err, res) =>{
+                expect(res.body.name).toBe('wat');
+                expect(res.status).toBe(200);
+                done();
+              });
+            });
+          });
+        });
+  });
+});
