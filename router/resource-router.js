@@ -20,10 +20,10 @@ resourceRouter.post('/api/resource', bearerAuth, (req, res) =>{
     console.log('resource',resource);
   })
   .catch(err => console.log(err));
-//need to fill
+
 });
 
-//if issue take out middle resource 
+
 resourceRouter.get('/api/resource', bearerAuth, (req, res) =>{
   Resource.findById(req.params.resourceId)
   .then(resource => res.json(resource))

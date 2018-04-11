@@ -3,6 +3,7 @@ const superagent = require('superagent');
 const mongoose = require('mongoose');
 const User = require('../model/user.js');
 const Resources = require('../model/resources.js');
+const server = require('../lib/server.js');
 require('jest');
 require('dotenv').config();
 
@@ -18,6 +19,18 @@ const resource = {
   name: 'test game',
 };
 
+beforeAll((done) => {
+  server.start()
+  .then(done);
+  
+});
+afterAll((done) => {
+  server.stop()
+  .then(() => {
+    console.log('done');
+    done();
+  });
+});
 describe('handel token less request', () =>{
   test('sends 401 for GET requests if no token was provided', (done) => {
     // console.log('url',SERVER_URL + '/api/resource');
@@ -52,6 +65,8 @@ describe('handel valid authorization', () =>{
         .send(JSON.stringify(newUser))
         .end((err, res) => {
           console.log('Res', res.body, res.auth);
+          console.log('Res text', res.text);
+
           let userId = res.body._id;
           //SIGNIN ROUTE 
           superagent.get(SERVER_URL + '/api/signin')
