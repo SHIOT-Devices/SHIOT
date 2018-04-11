@@ -35,6 +35,12 @@ resourceRouter.get('/api/resource', bearerAuth, (req, res) =>{
 // need to fill
 });
 
-
+resourceRouter.get('/api/resource-test', (req, res) =>{
+  // Resource.find()
+  // .then(resource => res.json(resource))
+  // .catch(err => console.log(err));
+// need to fill
+res.send('hi');
+});
 
 module.exports = resourceRouter;

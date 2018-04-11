@@ -32,5 +32,9 @@
     "mongoose": "^5.0.12",
     "superagent": "^3.8.2"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "mockgoose": "^7.3.5",
+    "supertest": "^3.0.0"
+  }
 }

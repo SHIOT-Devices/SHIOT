@@ -38,7 +38,7 @@ userSchema.methods.comparePasswordHash = function(password){
   return new Promise((resolve, reject) => {
     //passing plane text password and hashed password 
     //bcrypt will verify if they match
-    console.log('Model user compaire passwordHAsh', password)
+    
     bcrypt.compare(password, this.password,(err, match) => {
       if (err) return reject(err);
       if(!match) return reject(createError(401, 'invalid password'));
