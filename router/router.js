@@ -20,10 +20,10 @@ const authRouter = new Router();
 //         response.send(song);
 //       });
 //   } else {
-    // storage.getAll()
-    //   .then(users => {
-    //     response.send(users);
-    //   });
+// storage.getAll()
+//   .then(users => {
+//     response.send(users);
+//   });
 //     console.error(error);
 //     console.log('this user is not SHIoT');
 //   };
@@ -38,33 +38,37 @@ const authRouter = new Router();
 //////////////////////aarons code/////////////////////////
 //create an account 
 authRouter.post('/api/signup', bodyParser, (req, res, next) => {
-//TODO:fill out
-// auth object needs to be attached to body, so it needs to run through jsonparse
+  //TODO:fill out
+  // auth object needs to be attached to body, so it needs to run through jsonparse
   let password = req.body.password;
   delete req.body.password;
   let user = new User(req.body);
-  console.log('user',user);
+  // console.log('user',user);
 
   user.generatePasswordHash(password)
-  .then(user => user.save())
-  .then(user => user.generateToken())
-  .then(token => res.send(token))
-  .catch(next);
+    .then(user => user.save())
+    .then(user => user.generateToken())
+    .then(token => res.send(token))
+    .catch(next);
 
 });
 
 //signin to account, after we signin a token will generate and be used to authorize us to specific routes
-authRouter.get('/api/signin', basicAuth, (req, res, next) =>{
-//TODO:fillout
-//passing basicAuth to check the authheader, see basic-auth-middlewear
-//token is not here yet
- 
-  User.findOne({username: req.auth.username})
-.then( user => user.comparePasswordHash(req.auth.password))
-.then( user => user.generateToken())
-.then( token => res.send(token))
-.catch(next);
+authRouter.get('/api/signin', basicAuth, (req, res, next) => {
+  //TODO:fillout
+  //passing basicAuth to check the authheader, see basic-auth-middlewear
+  //token is not here yet
+  
+  // let username = document.getElementById('login-username');
+  // let password = document.getElementById('login-password');
 
+  User.findOne({ username: req.auth.username })
+    .then(user => user.comparePasswordHash(req.auth.password))
+    .then(user => user.generateToken())
+    .then(token => res.send(token))
+    .catch(next);
+
+  // res.sendFile(__dirname + '/public/signin.html');
 });
 
 /////////////////////////aarons code////////////////
