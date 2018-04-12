@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 dotenv.load();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const authRouter = require('./router/router.js');
 const resourceRouter = require('./router/resource-router.js');
 const bodyParser = require('body-parser');
