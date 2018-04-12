@@ -21,13 +21,8 @@ require('./lib/storage.js');
 app.use('/', authRouter);
 app.use('/', resourceRouter);
 
-
-app.use((request, response) => {
-  // have the server send back something
-  // response.writeHead(200, {'Content-Type': 'text/html'});//test response
-  // response.write('Testing Basic Server Response');//test response
-  response.sendFile(__dirname + '/public/signin.html');
-  // response.end();//test response
+app.get('/ping', (req, res) => {
+  res.send('pong');
 });
 
 app.listen(PORT, () => {

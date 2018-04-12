@@ -37,24 +37,25 @@ const authRouter = new Router();
 // });
 //////////////////////aarons code/////////////////////////
 //create an account 
-authRouter.post('/api/signup', bodyParser, (req, res, next) => {
+
+authRouter.post('/api/signup', basicAuth, (req, res) => {
+  console.log('HIT THE POST ROUTE');
+  console.log('request.headers', req.headers);
+  console.log('request.auth:::', req.auth);
   //TODO:fill out
   // auth object needs to be attached to body, so it needs to run through jsonparse
-  let password = req.body.password;
-  delete req.body.password;
-  let user = new User(req.body);
+  let password = req.auth.password;
+  delete req.auth.password;
+  let user = new User(req.auth);
   // console.log('user',user);
-
   user.generatePasswordHash(password)
     .then(user => user.save())
     .then(user => user.generateToken())
-    .then(token => res.send(token))
-    .catch(next);
-
+    .then(token => res.send(token));
 });
 
 //signin to account, after we signin a token will generate and be used to authorize us to specific routes
-authRouter.get('/api/signin', basicAuth, (req, res, next) => {
+authRouter.get('/api/signin', basicAuth, (req, res) => {
   //TODO:fillout
   //passing basicAuth to check the authheader, see basic-auth-middlewear
   //token is not here yet
@@ -65,8 +66,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
   User.findOne({ username: req.auth.username })
     .then(user => user.comparePasswordHash(req.auth.password))
     .then(user => user.generateToken())
-    .then(token => res.send(token))
-    .catch(next);
+    .then(token => res.send(token));
 
   // res.sendFile(__dirname + '/public/signin.html');
 });

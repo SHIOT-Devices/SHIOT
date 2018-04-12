@@ -7,13 +7,21 @@
   <title>SHIoT Login</title>
 </head>
 <body>
+    <a href="./signup.html">Signup Page</a>
+    <a href="./controls.html">Controls Page</a>
   <h1>Login Page</h1>
-  <form id="login" method="get" action="/api/signin">
+  <form id="signin-form">
     <p>Username: </p>
-    <input type="text" id="login-username"><br>
+    <input type="text" name="signin-username"><br>
     <p>Password: </p>
-    <input type="password" id="login-password"><br>
-    <button type="submit" value="Login">Submit</button>
+    <input type="password" name="signin-password"><br>
+    <button type="submit">Submit</button>
   </form>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <script src="./scripts/signin.js" type="text/javascript"></script>
 </body>
+
 </html>
