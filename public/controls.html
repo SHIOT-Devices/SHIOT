@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Test</title>
+</head>
+
+<body>
+  <h1>Test</h1>
+  <form id="controls" method="post" action="/led">
+    <button id="ledButton" plaecholder="LED" type="submit" style="width: 40px; height: 20px;">LED</button>
+  </form>
+  <div id="ledStatus">
+
+  </div>
+  <script>
+    function ip_local() {
+      var ip = false;
+      window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || false;
+
+      if (window.RTCPeerConnection) {
+        var ip = [];
+        var pc = new RTCPeerConnection({ iceServers: [] }), noop = function () { };
+        pc.createDataChannel('');
+        pc.createOffer(pc.setLocalDescription.bind(pc), noop);
+
+        pc.onicecandidate = function (event) {
+          if (event && event.candidate && event.candidate.candidate) {
+            var s = event.candidate.candidate.split('\n');
+            ip.push(s[0].split(' ')[4]);
+            console.log('variable s', s);
+          }
+        }
+      }
+      return ip;
+    };
+    console.log(ip_local([0]));
+
+    // Connection to SHIoT Device
+    const socket = io.connect(window.location.href);
+
+    // Query DOM
+    let form = document.getElementById('controls');
+    let ledStatus = document.getElementById('ledStatus');
+
+    // prevents page from refreshing and getting new socket id
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      fetch(form.action, {
+        method: 'POST'
+      });
+    });
+
+    // Listen for events
+    socket.on('ledStatus', (data) => {
+      let led = '';
+      if (data) {
+        led = 'on';
+      } else {
+        led = 'off';
+      }
+
+      ledStatus.innerHTML = '<p><strong>LED is currently ' + led + '</strong></p>';
+    });
+  </script>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/status.js"></script>
+
+</html>
