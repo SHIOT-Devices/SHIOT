@@ -13,12 +13,12 @@ const resourceRouter = Router();
 // have a token, then it will mov on to bodyparcer and then it will run the CB
 resourceRouter.post('/api/resource', bearerAuth, (req, res) =>{
  
-  console.log('req-user_Id-resource-router', req.user);
+
   
-  req.body.userId = req.user._id;
 
   return new Resource(req.body).save()
   .then((resource) => {
+  
     res.status(200).send(resource);
   })
   .catch(err => console.log(err));
@@ -26,10 +26,13 @@ resourceRouter.post('/api/resource', bearerAuth, (req, res) =>{
 });
 
 //if issue take out middle resource 
-resourceRouter.get('/api/resource', bearerAuth, (req, res) =>{
-  console.log('params', req.params.resourceId);
-  Resource.findById(req.params.resourceId)
-  .then(resource => res.json(resource))
+resourceRouter.get('/api/resource/:userId', bearerAuth, (req, res) =>{
+  console.log('30 params', req.params.userId);
+  Resource.findById(req.params.userId)
+  .then( resource => {
+
+   res.json(resource);
+  })
   .catch(err => console.log(err));
 // need to fill
 });

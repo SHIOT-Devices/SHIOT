@@ -64,7 +64,7 @@ describe('handel valid authorization', () =>{
         .auth(newUser.username, newUser.password)
         .send(JSON.stringify(newUser))
         .end((err, res) => {
-          console.log('RES TEX', res.text);
+  
           console.log('RES body', res.body);
 
           let userId = res.body.user._id;
@@ -72,24 +72,28 @@ describe('handel valid authorization', () =>{
           //SIGNIN ROUTE 
 
           let newPost = {
-            name: 'wat' + Math.random(),
-            userId: userId
-              
+            name: 'wataaaaa',
+            userId: userId  
           };
           console.log('NEWPOST', newPost);
-          token = res.body.user.token;
+          
+          token = res.body.token;
+          console.log('81 TOKEN', token);
           superagent.post(SERVER_URL + '/api/resource')
             .set('Content-type', 'application/json')
             .set('Authorization', 'Bearer ' + token)
             .send(newPost)
             .end((err, res) => {
-              if(err)console.log('ERROR',err);
-              let postId = res.body.id;
+           
+              if(err)console.log('ERROR');
+              let postId = res.body.userId;
               console.log('89 res', res.body);
-              superagent.get(SERVER_URL + '/api/resource?id' + postId)
+              superagent.get(SERVER_URL + '/api/resource/' + postId)
               .set('Authorization', 'Bearer ' + token)
               .end((err, res) =>{
-                expect(res.body.name).toBe('wat');
+                console.log('url',SERVER_URL + '/api/resource?id=' + postId);
+                console.log('95 body',res.body)
+                expect(res.name).toBe('wataaaaa');
                 expect(res.status).toBe(200);
                 done();
               });

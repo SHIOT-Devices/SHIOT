@@ -14,21 +14,28 @@ const bodyParser = require('body-parser').json();
 
  
 authRouter.post('/api/signup', basicAuth, (req, res, next) => {
- console.log('hiiiiii');
- console.log('reqbody',req.body);
   let password = req.body.password;
   delete req.body.password;
 
   let user = new User(req.body);
-  console.log('routes user',req.body)
+
   user.generatePasswordHash(password)
   .then(user => user.save())
   .then(user => {
     let token = user.generateToken();
-    let results = {token,user};
-    return results;
+    return token;
   })
-  .then(results =>  res.send(results))
+    .then(token => { 
+ 
+      let results = {token, user};
+  
+      return results;
+      
+    })
+  .then(results =>{
+    
+     res.send(results)
+  })
   .catch(next);
 
 });
