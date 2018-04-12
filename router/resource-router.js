@@ -47,7 +47,7 @@ resourceRouter.get('/api/admin', bearerAuth, (req, res) => {
 let usedBy = '';
 
 // Post request to run function and return page.
-app.post('/api/controls/led',(req, res) => {
+resourceRouter.post('/api/controls/led',(req, res) => {
   usedBy = requestIp.getClientIp(req);
   switchLed(); // exicutes the function to toggle LED state.
   // console.log(request.connection.remoteAddress);
@@ -98,21 +98,6 @@ function switchLed() {
   io.emit('ledStatus', isLedOn);
 };
 
-const server = app.listen(PORT, () => {
-  console.log('Listening on port:', PORT, 'use CTRL+C to close.');
-});
 
-const io = socket(server);
-
-io.on('connection', function(socket){
-  let clientIp = [];
-  io.emit('ledStatus', isLedOn);
-  clientIp.push(socket.request.connection.remoteAddress);
-  console.log('made socket connection', socket.id, clientIp);
-
-  socket.on('ledStatus', (isLedOn) => {
-    io.sockets.emit('ledStatus', isLedOn);
-  });
-});
 
 module.exports = resourceRouter;

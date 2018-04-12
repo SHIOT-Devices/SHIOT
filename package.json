@@ -30,6 +30,10 @@
     "jest": "^22.4.3",
     "jsonwebtoken": "^8.2.0",
     "mongoose": "^5.0.12",
+    "onoff": "^3.0.2",
+    "request": "^2.85.0",
+    "request-ip": "^2.0.2",
+    "socket.io": "^2.1.0",
     "superagent": "^3.8.2"
   },
   "keywords": []

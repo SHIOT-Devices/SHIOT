@@ -21,7 +21,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
     .then(token => res.send(token))
     .catch(next);
 
-  res.sendFile('controls.html', { root: './public' });
+  // res.sendFile('controls.html', { root: './public' });
 });
 
 //create an account 
