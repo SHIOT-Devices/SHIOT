@@ -26,12 +26,12 @@ resourceRouter.post('/api/resource', bearerAuth, (req, res) =>{
 });
 
 //if issue take out middle resource 
-resourceRouter.get('/api/resource/:userId', bearerAuth, (req, res) =>{
-  console.log('30 params', req.params.userId);
-  Resource.findById(req.params.userId)
-  .then( resource => {
-
-   res.json(resource);
+resourceRouter.get('/api/resource/:resourceID', bearerAuth, (req, res) =>{
+  console.log('30 params', req.params.resourceID);
+  Resource.findById(req.params.resourceID)
+  .then(resource => {
+    console.log('33 resource',resource);
+    return res.json(resource);
   })
   .catch(err => console.log(err));
 // need to fill
