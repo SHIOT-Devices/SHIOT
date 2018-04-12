@@ -10,32 +10,20 @@ const bodyParser = require('body-parser').json();
 
 const authRouter = new Router();
 
+//signin to account, after we signin a token will generate and be used to authorize us to specific routes
+authRouter.get('/api/signin', basicAuth, (req, res, next) => {
+  //TODO:fillout
+  //passing basicAuth to check the authheader, see basic-auth-middlewear
 
-/////////////////aarons code/////////////////////////////////
-// router.get('/user', (request, response) => {
-//   if (request.query.id) {
-//     let id = request.query.id;
-//     storage.get(id)
-//       .then(song => {
-//         response.send(song);
-//       });
-//   } else {
-// storage.getAll()
-//   .then(users => {
-//     response.send(users);
-//   });
-//     console.error(error);
-//     console.log('this user is not SHIoT');
-//   };
-// });
+  User.findOne({ username: req.auth.username })
+    .then(user => user.comparePasswordHash(req.auth.password))
+    .then(user => user.generateToken())
+    .then(token => res.send(token))
+    .catch(next);
 
-// router.get('/admin', (request, response) => {
-//   storage.getAll()
-//     .then(users => {
-//       response.send(users);
-//     });
-// });
-//////////////////////aarons code/////////////////////////
+  res.sendFile('controls.html', { root: './public' });
+});
+
 //create an account 
 authRouter.post('/api/signup', bodyParser, (req, res, next) => {
   //TODO:fill out
@@ -53,43 +41,5 @@ authRouter.post('/api/signup', bodyParser, (req, res, next) => {
 
 });
 
-//signin to account, after we signin a token will generate and be used to authorize us to specific routes
-authRouter.get('/api/signin', basicAuth, (req, res, next) => {
-  //TODO:fillout
-  //passing basicAuth to check the authheader, see basic-auth-middlewear
-  //token is not here yet
-  
-  // let username = document.getElementById('login-username');
-  // let password = document.getElementById('login-password');
 
-  User.findOne({ username: req.auth.username })
-    .then(user => user.comparePasswordHash(req.auth.password))
-    .then(user => user.generateToken())
-    .then(token => res.send(token))
-    .catch(next);
-
-  // res.sendFile(__dirname + '/public/signin.html');
-});
-
-/////////////////////////aarons code////////////////
-// router.post('/user', bodyParser, (request, response) => {
-//   let user = {
-//     username: request.body.username,
-//     password: request.body.password
-//   };
-
-//   storage.save(user)
-//     .then(user => {
-//       console.log('passed saved function');
-//       response.status(200);
-//       response.send(user);
-//     });
-// });
-
-
-// router.put()
-
-
-// router.delete()
-///////////////////////////////////////////////////////////////////
 module.exports = authRouter;

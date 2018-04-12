@@ -8,6 +8,13 @@ const User = require('../model/user.js');
 const Resource = require('../model/resources.js');
 const basicAuth = require('../lib/basic-auth-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middlewear.js');
+const requestIp = require('request-ip');
+// const cors = require('cors');
+const socket = require('socket.io');
+const request = require('request');
+const Gpio = require('onoff').Gpio;
+const led = new Gpio(18, 'out');
+const button = new Gpio(4, 'in', 'both');
 const resourceRouter = new Router();
 //post, bearAuth will check if the user is authorized
 //when we make a post, it will check the user object which will 
@@ -28,43 +35,84 @@ resourceRouter.post('/api/resource', bearerAuth, (req, res) => {
   //need to fill
 });
 
-// //if issue take out middle resource 
-// resourceRouter.get('/api/resource', bearerAuth, (req, res) => {
-//   Resource.findById(req.params.resourceId)
-//     .then(resource => res.json(resource))
-//     .catch(err => console.log(err));
-//   // need to fill
-//   // res.sendFile('controls.html', {root:'./public'});
-// });
-
 // new test route
-resourceRouter.get('/api/resource', bearerAuth, (req, res) => {
-  // Resource.find()
-  //   .then(resources => res.json(resources))
-  //   .catch(err => console.log(err));
-  // need to fill
-  res.sendFile('controls.html', {root:'./public'});
+resourceRouter.get('/api/admin', bearerAuth, (req, res) => {
+  res.sendFile('admin.html', {root:'./public'});
 });
 
-resourceRouter.get('/api/ping', (req, res) => {
-  res.send('pong!');
-});
-
-// //Temp test router 
-// resourceRouter.get('/api/resource', basicAuth, (req, res) => {
-//   User.findOne({ username: req.auth.username })
-//     .then(user => user.comparePasswordHash(req.auth.password))
-//     .catch();
-//   // Resource.findById(req.params.resourceId)
-//   //   .then(resource => res.json(resource))
-//   //   .catch(err => console.log(err));
-//   // // need to fill
-//   console.log(__dirname + '../public/controls.html');
-//   // res.sendFile(__dirname + '../public/controls.html');
-//   // only works as long as there are no other dependencies
-//   res.sendFile('controls.html', {root:'./public'});
+// resourceRouter.get('/api/ping', (req, res) => {
+//   res.send('pong!');
 // });
 
+let usedBy = '';
 
+// Post request to run function and return page.
+app.post('/api/controls/led',(req, res) => {
+  usedBy = requestIp.getClientIp(req);
+  switchLed(); // exicutes the function to toggle LED state.
+  // console.log(request.connection.remoteAddress);
+  
+  // console.log(requestIp.getClientIp(req));
+  res.sendFile(__dirname + '/public/index.html'); // returns the previous page.
+});
+// using httpie  http POST 192.168.10.13:3000/led
+
+// Heartbeat
+// let hbServer = 'http://192.168.10.10:3002/heartbeat';
+let hbServer = 'https://shiot-remote-server.herokuapp.com/heartbeat';
+setInterval(function(){
+  // console.log('heartbeat');
+  // this will eventually be a configuration setting in the .env file.
+  request.post(hbServer, () => {
+  });
+}, 1000 * 3);
+
+// Monitors for button press event.
+button.watch(function (err, value) {
+  if (err) {
+    throw (err);
+  };
+  if (value === 0) {
+    usedBy = 'button';
+    switchLed();
+  };
+});
+
+// Resets Led to off on start.
+led.writeSync(0);
+
+// Switches LED between on and off.
+let isLedOn = false;
+function switchLed() {
+  isLedOn = !isLedOn;
+  let state = 0;
+  let message = 'off';
+
+  if (isLedOn) {
+    state = 1;
+    message = 'on';
+  };
+  led.writeSync(state);
+  console.log('Led turned ', message, '@', new Date(), 'by:', usedBy);
+
+  io.emit('ledStatus', isLedOn);
+};
+
+const server = app.listen(PORT, () => {
+  console.log('Listening on port:', PORT, 'use CTRL+C to close.');
+});
+
+const io = socket(server);
+
+io.on('connection', function(socket){
+  let clientIp = [];
+  io.emit('ledStatus', isLedOn);
+  clientIp.push(socket.request.connection.remoteAddress);
+  console.log('made socket connection', socket.id, clientIp);
+
+  socket.on('ledStatus', (isLedOn) => {
+    io.sockets.emit('ledStatus', isLedOn);
+  });
+});
 
 module.exports = resourceRouter;

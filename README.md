@@ -8,4 +8,4 @@ http GET :3000/api/signin --auth pi:raspberry
  Does it make sense to run password check in the sign in and provide the token then.
  req.header does not have authorization property for bearer auth
 
- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImVjNTEyZGYzNTkzNGQ5ZWY3ZjdjZTUyODQ3ZThiMTg0ZDhmYzUwNjRlOWZlMTc1NWE1Yzk2MGNlZTlhYjdkMmQiLCJpYXQiOjE1MjM0OTI1NDF9.jcN2x4sWeWM_2nR1NPwECO7_5XPAwS3YHas4kp9TMGI
+ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6Ijg4ZGQzNGNlNmNkMTg4M2M2NzEyYTg3MGFlNTQyMzlmNjliZjk2MWM1NWU2MTI3OWRjOGJkNDY5ZmIwN2I0MWUiLCJpYXQiOjE1MjM1MDM4Mzd9.rYLg0M2_dJK0CmoTO8Yt6aQF7dSb7I9dV4V9mrzV34I
