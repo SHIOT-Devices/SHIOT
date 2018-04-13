@@ -9,7 +9,7 @@ const User = require('../model/user.js');
 const Resource = require('../model/resources.js');
 const basicAuth = require('../lib/basic-auth-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middlewear.js');
-const led1 = require('../lib/gpio.js').led1;
+// const led1 = require('../lib/gpio.js').led1;
 const resourceRouter = new Router();
 //post, bearAuth will check if the user is authorized
 //when we make a post, it will check the user object which will 

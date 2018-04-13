@@ -14,7 +14,7 @@ dotenv.load();
 const PORT = process.env.PORT;
 const authRouter = require('./router/router.js');
 const resourceRouter = require('./router/resource-router.js');
-const gpio = require('./lib/gpio.js');
+// const gpio = require('./lib/gpio.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const requestIp = require('request-ip');
