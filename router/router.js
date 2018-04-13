@@ -71,25 +71,24 @@ authRouter.get('/api/signin', basicAuth, (req, res) => {
   // res.sendFile(__dirname + '/public/signin.html');
 });
 
-/////////////////////////aarons code////////////////
-// router.post('/user', bodyParser, (request, response) => {
-//   let user = {
-//     username: request.body.username,
-//     password: request.body.password
-//   };
 
-//   storage.save(user)
+// authRouter.put('/api/controls', bearerAuth, (request, response) => {
+//   User.findOne({username: request.auth.username});
+//   console.log(User);
+//   let newUsername = WHATEVER CONTROLS FORM INPUT USERNAME IS
+//   let newUserPass = WHATEVER CONTROLS FORM INPUT PASSWORD IS
 //     .then(user => {
-//       console.log('passed saved function');
-//       response.status(200);
-//       response.send(user);
-//     });
+//       
+//     })
 // });
 
 
-// router.put()
+// authRouter.delete('/api/controls', bearerAuth, (request, response) => {
+//   User.findOne({username: request.auth.username})
+//     .then(user => {
+//       user.SOMEDELETEMETHOD(request.auth.username);
+//     })
+//     .then(response.send(`${request.auth.username} Deleted`));
+// });
 
-
-// router.delete()
-///////////////////////////////////////////////////////////////////
 module.exports = authRouter;
