@@ -30,14 +30,33 @@ describe('/user', () => {
         done();
       });
   });
-
-
-  // it('should return a user matched with the username query', (done) => {
-  //   let params = getUserParams();
-  //   return superagent.get(USER_URL)
-  //   .set('Authorization', 'Basic' + encoded);
-  // })
-  // .catch(res => {
-  //   expect(res.status).toEqual(200);
-  // });
 });
+
+describe('/user', () => {
+  it('should return status 200 with successful request', (done) => {
+      // let params = getUserParams();
+    return superagent.post(USER_URL)
+        .set('Content-Type', 'application/json')
+        .send(testUser)
+        .then(res => {
+          console.log('res.body', res.text);
+          console.log(USER_URL);
+          expect(res.status).toEqual(200);
+          done();
+        });
+  });
+});
+
+describe('/api/signup', () => {
+  it('should return status 401 if missing username', (done) => {
+    let params = getUserParams();
+    delete params['username'];
+    superagent.post(USER_URL)
+        .set('Content-Type', 'application/json')
+        .send(params)
+        .catch(err => {
+          expect(err.status).toEqual(401);
+          done();
+        });
+  });
+}); 
