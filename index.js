@@ -14,10 +14,11 @@ dotenv.load();
 const PORT = process.env.PORT;
 const authRouter = require('./router/router.js');
 const resourceRouter = require('./router/resource-router.js');
-// const gpio = require('./lib/gpio.js');
+const gpio = require('./lib/gpio.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const requestIp = require('request-ip');
+const request = require('request'); // Used by heartbeat server
 const socket = require('socket.io');
 const cors = require('cors');
 
@@ -25,7 +26,7 @@ const cors = require('cors');
 // const cors = require('cors');
 // const socket = require('socket.io');
 //
-// const request = require('request');
+
 // const Gpio = require('onoff').Gpio;
 // const led = new Gpio(18, 'out');
 // const button = new Gpio(4, 'in', 'both');
