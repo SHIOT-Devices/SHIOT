@@ -15,10 +15,7 @@ const resourceRouter = new Router();
 //when we make a post, it will check the user object which will 
 // have a token, then it will mov on to bodyparcer and then it will run the CB
 resourceRouter.post('/api/resource', bearerAuth, (req, res) => {
-
   // console.log('req-user_Id-resource-router', req.user);
-
-
   req.body.userId = req.user._id;
   // console.log('req-user_Id-resource-router', req.body);
   return new Resource(req.body).save()
@@ -28,6 +25,14 @@ resourceRouter.post('/api/resource', bearerAuth, (req, res) => {
     })
     .catch(err => console.log(err));
   //need to fill
+});
+
+// Controls route
+resourceRouter.get('/api/controls', bearerAuth, (req, res) => {
+  // const location = '../public/controls.html';
+  // console.log(location);
+  // res.send(location);
+  res.sendFile('controls.html', {root:'./public'});
 });
 
 // new test route
@@ -42,9 +47,10 @@ resourceRouter.get('/api/admin', bearerAuth, (req, res) => {
 // Post request to run function and return page.
 
 resourceRouter.post('/api/controls/led', bearerAuth, (req, res) => {
-  // usedBy = requestIp.getClientIp(req);
-  // led1('', usedBy); // exicutes the function to toggle LED state.
-  led1();
+  let usedBy = '';
+  usedBy = requestIp.getClientIp(req);
+  led1('', usedBy); // exicutes the function to toggle LED state.
+  // led1();
 
   // console.log(request.connection.remoteAddress); 
   // console.log(requestIp.getClientIp(req));

@@ -19,10 +19,19 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
     .then(user => user.comparePasswordHash(req.auth.password))
     .then(user => user.generateToken())
     .then(token => res.send(token))
-    .catch(res.sendFile('controls.html', { root: './public' }));
+    // .then(res.sendFile('controls.html', { root: './public' }));
+    .catch(next);
 
   // res.sendFile('controls.html', { root: './public' });
 });
+
+// // Controls route
+// authRouter.get('/api/controls', basicAuth, (req, res) => {
+//   // const location = '../public/controls.html';
+//   // console.log(location);
+//   // res.send(location);
+//   res.sendFile('controls.html', {root:'./public'});
+// });
 
 //create an account 
 authRouter.post('/api/signup', bodyParser, (req, res, next) => {

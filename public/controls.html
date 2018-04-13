@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Test</title>
+  <title>SHIoT Controls</title>
 </head>
 
 <body>
-  <h1>Test</h1>
-  <form id="controls" method="post" action="/led">
+  <h1>Controls Page</h1>
+  <form id="controls" action="reDirect(JSON.parse(localStorage.token))">
     <button id="ledButton" plaecholder="LED" type="submit" style="width: 40px; height: 20px;">LED</button>
   </form>
   <div id="ledStatus">
@@ -53,6 +53,24 @@
         method: 'POST'
       });
     });
+
+    function reDirect(parsedToken) {
+    $.ajax({
+      url: `${window.location.href}api/controls/led`,
+      method: 'POST',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', `Bearer ${parsedToken}`)
+      },
+      // data: {},
+      // success: function () { },
+      // error: function () { },
+    })
+    // .then(results => {
+    //   // location = './controls.html';
+    //   console.log('Bearer resutls:', results);
+    // })
+    console.log('red token:', parsedToken);
+  }
 
     // Listen for events
     socket.on('ledStatus', (data) => {

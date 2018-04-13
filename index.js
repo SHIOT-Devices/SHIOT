@@ -14,21 +14,21 @@ dotenv.load();
 const PORT = process.env.PORT;
 const authRouter = require('./router/router.js');
 const resourceRouter = require('./router/resource-router.js');
-const gpio = require('./lib/gpio.js');
+// const gpio = require('./lib/gpio.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const requestIp = require('request-ip');
 const socket = require('socket.io');
 const cors = require('cors');
 
-const bearerAuth = require('./lib/bearer-auth-middlewear.js');
+// const bearerAuth = require('./lib/bearer-auth-middlewear.js');
 // const cors = require('cors');
 // const socket = require('socket.io');
 //
-const request = require('request');
-const Gpio = require('onoff').Gpio;
-const led = new Gpio(18, 'out');
-const button = new Gpio(4, 'in', 'both');
+// const request = require('request');
+// const Gpio = require('onoff').Gpio;
+// const led = new Gpio(18, 'out');
+// const button = new Gpio(4, 'in', 'both');
 
 mongoose.connect(process.env.MONGODB_URI);
 app.use(cors());
@@ -43,8 +43,8 @@ app.use('/', authRouter);
 app.use('/', resourceRouter);
 
 
-app.use((request, response) => {
-  response.sendFile(__dirname + '/public/signin.html');
+app.use((req, res) => {
+  res.sendFile('signin.html', {root:'./public'});
 });
 
 // Heartbeat
@@ -61,4 +61,3 @@ const server = app.listen(PORT, () => {
 });
 
 module.exports.server = server; 
-/////////////////////////////////put in gpio.js somehow////////////////////////////////////
