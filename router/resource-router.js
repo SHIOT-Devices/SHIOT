@@ -9,6 +9,7 @@ const User = require('../model/user.js');
 const Resource = require('../model/resources.js');
 const basicAuth = require('../lib/basic-auth-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middlewear.js');
+const led1 = require('../lib/gpio.js').led1;
 const resourceRouter = new Router();
 //post, bearAuth will check if the user is authorized
 //when we make a post, it will check the user object which will 
@@ -39,13 +40,15 @@ resourceRouter.get('/api/admin', bearerAuth, (req, res) => {
 // });
 
 // Post request to run function and return page.
-let usedBy = '';
+
 resourceRouter.post('/api/controls/led', bearerAuth, (req, res) => {
-  usedBy = requestIp.getClientIp(req);
-  // switchLed(); // exicutes the function to toggle LED state.
-  // console.log(request.connection.remoteAddress);
-  
+  // usedBy = requestIp.getClientIp(req);
+  // led1('', usedBy); // exicutes the function to toggle LED state.
+  led1();
+
+  // console.log(request.connection.remoteAddress); 
   // console.log(requestIp.getClientIp(req));
+  
   res.sendFile('controls.html', {root:'./public'}); // returns the previous page.
 });
 // using httpie  http POST 192.168.10.13:3000/led

@@ -19,7 +19,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
     .then(user => user.comparePasswordHash(req.auth.password))
     .then(user => user.generateToken())
     .then(token => res.send(token))
-    .catch(next);
+    .catch(res.sendFile('controls.html', { root: './public' }));
 
   // res.sendFile('controls.html', { root: './public' });
 });
