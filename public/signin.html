@@ -57,7 +57,7 @@ const signinFunction = (hash) => {
   
   .then((parsedToken) => {
     var parsedToken = JSON.parse(localStorage.token);
-    reDirect(parsedToken);
+    reDirect();
   })
 
   // .then( () => {
@@ -65,25 +65,29 @@ const signinFunction = (hash) => {
   // })
 };
 
-const reDirect = (parsedToken) => {
-// function reDirect(parsedToken) {
-    $.ajax({
-      url: `${window.location.href}api/controls`,
-      method: 'GET',
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', `Bearer ${parsedToken}`)
-      },
-      // data: {},
-      // success: function () { },
-      // error: function () { },
-    })
-    .then(results => {
-      // location = './controls.html';
-      console.log('Bearer resutls:', results);
-      return results;
-    })
-    console.log('red token:', parsedToken);
-  }
+function reDirect() {
+  window.location.href = `${window.location.href}controls`;
+}
+
+// const reDirect = (parsedToken) => {
+// // function reDirect(parsedToken) {
+//     $.ajax({
+//       url: `${window.location.href}api/controls`,
+//       method: 'GET',
+//       beforeSend: function (xhr) {
+//         xhr.setRequestHeader('Authorization', `Bearer ${parsedToken}`)
+//       },
+//       // data: {},
+//       // success: function () { },
+//       // error: function () { },
+//     })
+//     .then(results => {
+//       // location = './controls.html';
+//       console.log('Bearer resutls:', results);
+//       return results;
+//     })
+//     console.log('red token:', parsedToken);
+//   }
   </script>
 </body>
 </html>

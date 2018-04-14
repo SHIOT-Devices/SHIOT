@@ -28,12 +28,12 @@ resourceRouter.post('/api/resource', bearerAuth, (req, res) => {
 });
 
 // Controls route
-resourceRouter.get('/api/controls', bearerAuth, (req, res) => {
-  // const location = '../public/controls.html';
-  // console.log(location);
-  // res.send(location);
-  res.sendFile('controls.html', {root:'./public'});
-});
+// resourceRouter.get('/api/controls', bearerAuth, (req, res) => {
+//   // const location = '../public/controls.html';
+//   // console.log(location);
+//   // res.send(location);
+//   // res.sendFile('controls.html', {root:'./public'});
+// });
 
 // new test route
 resourceRouter.get('/api/admin', bearerAuth, (req, res) => {
@@ -46,7 +46,7 @@ resourceRouter.get('/api/admin', bearerAuth, (req, res) => {
 
 // Post request to run function and return page.
 
-resourceRouter.post('/api/controls/led', bearerAuth, (req, res) => {
+resourceRouter.post('/api/controls/led', (req, res) => {
   let usedBy = '';
   usedBy = requestIp.getClientIp(req);
   led1('', usedBy); // exicutes the function to toggle LED state.
@@ -55,7 +55,8 @@ resourceRouter.post('/api/controls/led', bearerAuth, (req, res) => {
   // console.log(request.connection.remoteAddress); 
   // console.log(requestIp.getClientIp(req));
   
-  res.sendFile('controls.html', {root:'./public'}); // returns the previous page.
+  res.sendFile('/controls.html', {root:'./public'});
+  // res.sendFile('controls.html', {root:'./public'}); // returns the previous page.
 });
 // using httpie  http POST 192.168.10.13:3000/led
 

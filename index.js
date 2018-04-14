@@ -44,6 +44,21 @@ app.use('/', authRouter);
 app.use('/', resourceRouter);
 
 
+// app.use((req, res) => {
+//   res.sendFile('signin.html', {root:'./public'});
+// });
+
+// START: JB addition to handle redirecting to controls page
+app.use('/controls', express.static('./public'));
+
+app.get('/controls', (req, res) => {
+  // rename to controls.html when ready
+  // console.log('controls body:', res.header);
+  // res.sendFile('/controls-test.html', {root:'./public'});
+  res.sendFile('/controls.html', {root:'./public'});
+});
+// END: Note - must come before catch all route
+
 app.use((req, res) => {
   res.sendFile('signin.html', {root:'./public'});
 });
