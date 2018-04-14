@@ -6,7 +6,8 @@ const Resources = require('../model/resources.js');
 require('jest');
 require('dotenv').config();
 
-const SERVER_URL = '192.168.10.15:3000';
+const SERVER_URL = 'localhost:3000';
+console.log('serverURL', SERVER_URL);
 function getUserParams() {
   return {
     username: 'roseeeee' + Math.random(),

@@ -3,8 +3,8 @@ const superagent = require('superagent');
 const mongoose = require('mongoose');
 const User = require('../model/user.js');
 const PORT = process.env.PORT || 3000;
-const SERVER_URL = 'http://localhost:' + PORT;
-const USER_URL = SERVER_URL + '/api/signup';
+const SERVER_URL = window.location.href;
+const USER_URL = window.location.href + '/api/signup';
 
 function getUserParams() {
   // using + Math.rabdom() to avoid duplicate user errors
