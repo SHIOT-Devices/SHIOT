@@ -30,7 +30,7 @@
 //   })
 
 // Connection to SHIoT Device
-const socket = io.connect(window.location.href);
+const socket = io();
 console.log('server:', window.location.href);
 
 // Query DOM
