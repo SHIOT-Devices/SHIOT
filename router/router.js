@@ -57,4 +57,8 @@ authRouter.get('/controls', (req, res) => {
   res.sendFile('/controls.html', {root:'./public'});
 });
 
+authRouter.get('/admin', (req, res) => {
+  res.sendFile('/admin.html', {root:'./public'});
+});
+
 module.exports = authRouter;

@@ -10,6 +10,7 @@ const Resource = require('../model/resources.js');
 const basicAuth = require('../lib/basic-auth-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middlewear.js');
 const led1 = require('../lib/gpio.js').led1;
+const storage = require('../lib/storage.js');
 const resourceRouter = new Router();
 //post, bearAuth will check if the user is authorized
 //when we make a post, it will check the user object which will 
@@ -44,5 +45,39 @@ resourceRouter.post('/api/controls/led2', (req, res) => {
   led1('', usedBy); // exicutes the function to toggle LED state.
   res.sendFile('controls.html', {root:'./public'}); // returns the previous page.
 });
+
+//ADMIN GET ALL USERS//?
+resourceRouter.get('/api/admin', bearerAuth, (request, response) => {
+  User.find()
+    .then(list => {
+      console.log('resource-47 LIST: ', list);
+      response.send(list);
+    });
+});
+////////
+//ADMIN GET ONE USER//?
+resourceRouter.get('/api/admin', bearerAuth, (request, response) => {
+  let r = storage.getAll();
+console.log(r);
+  // User.findOne({ username: request.auth.username })
+  //   .then(user => user.comparePasswordHash(request.auth.password))
+  //   // .then(user => user.generateToken())
+  //   // .then(token => response.send(token));
+  //   .then(searchedUser => {
+  //     response.send(searchedUser);
+  //   });
+});
+////////
+// ADMIN ADD USER//?
+resourceRouter.post('/api/admin', basicAuth, (request, response) => {
+  // let password = request.body.password;
+  // delete request.body.password;
+  // let user = new User(request.body);
+  user.generatePasswordHash(password)
+    .then(user => user.save())
+    .then(user => user.generateToken())
+    .then(token => response.send(token));
+});
+////////
 
 module.exports = resourceRouter;
