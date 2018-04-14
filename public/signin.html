@@ -85,6 +85,7 @@ const reDirect = (parsedToken) => {
     .then(results => {
       // location = './controls.html';
       console.log('Bearer resutls:', results);
+      document.body.innerHTML = results;
       return results;
     })
     console.log('red token:', parsedToken);
