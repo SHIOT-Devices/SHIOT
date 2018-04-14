@@ -12,3 +12,4 @@ const resourcesSchema = Schema({
 });
 
 module.exports = mongoose.model('resources', resourcesSchema);
+//
