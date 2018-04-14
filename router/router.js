@@ -12,16 +12,13 @@ const authRouter = new Router();
 
 //signin to account, after we signin a token will generate and be used to authorize us to specific routes
 authRouter.get('/api/signin', basicAuth, (req, res, next) => {
-  //TODO:fillout
   //passing basicAuth to check the authheader, see basic-auth-middlewear
-
   User.findOne({ username: req.auth.username })
     .then(user => user.comparePasswordHash(req.auth.password))
     .then(user => user.generateToken())
     .then(token => res.send(token))
     // .then(res.sendFile('controls.html', { root: './public' }));
     .catch(next);
-
   // res.sendFile('controls.html', { root: './public' });
 });
 
@@ -41,25 +38,23 @@ authRouter.post('/api/signup', bodyParser, (req, res, next) => {
   let user = new User(req.body);
 
   user.generatePasswordHash(password)
-  .then(user => user.save())
-  .then(user => {
-    let token = user.generateToken();
-    return token;
-  })
-    .then(token => { 
- 
-      let results = {token, user};
-  
-      return results;
-      
+    .then(user => user.save())
+    .then(user => {
+      let token = user.generateToken();
+      return token;
     })
-  .then(results =>{
-    
-     res.send(results)
-  })
-  .catch(next);
-
+    .then(token => {
+      let results = { token, user };
+      return results;
+    })
+    .then(results => {
+      res.send(results);
+    })
+    .catch(next);
 });
 
+authRouter.get('/controls', (req, res) => {
+  res.sendFile('/controls.html', {root:'./public'});
+});
 
 module.exports = authRouter;

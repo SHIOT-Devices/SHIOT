@@ -4,16 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>SHIoT Login</title>
+  <title>SHIoT Signin</title>
 </head>
 <body>
-  <h1>Login Page</h1>
-  <form id="login" method="get" action="/api/signin">
+  <h1>Signin Page</h1>
+  <form id="signin-form">
     <p>Username: </p>
-    <input type="text" id="login-username"><br>
+    <input type="text" name="signin-username"><br>
     <p>Password: </p>
-    <input type="password" id="login-password"><br>
-    <button type="submit" value="Login">Submit</button>
+    <input type="password" name="signin-password"><br>
+    <button type="submit">Signin</button>
   </form>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script type="text/javascript">
+  'use strict';
+
+$('#signin-form').on('submit', (event) => {
+  event.preventDefault();
+  console.log('EVENT', event.target);
+  const username = $('input[name=signin-username]').val();
+  console.log('username: ', username);
+  const password = $('input[name=signin-password]').val();
+  console.log('password: ', password);
+  let hash = btoa(`${username}:${password}`);
+  signinFunction(hash);
+});
+
+const signinFunction = (hash) => {
+  console.log('hash:', hash);
+  console.log('server', `${window.location.href}api/signin`);
+  $.ajax({
+    url: `${window.location.href}api/signin`,
+    method: 'GET',
+    headers: {
+      Authorization: `Basic ${hash}`
+    }
+  })
+  .then(results => {
+    console.log('basic resutls:', results);
+    localStorage.token = JSON.stringify(results);
+  })
+  // .then($.ajax({
+  //   url: `${window.location.href}api/controls`,
+  //   method: 'GET',
+  //   headers: {
+  //     Authorization: `Basic ${hash}`
+  //   }
+  // }))
+  // .then(results => {
+  //   console.log('redirect resutls:', results);
+  // })
+  
+  .then((parsedToken) => {
+    var parsedToken = JSON.parse(localStorage.token);
+    // reDirect();
+    reDirect(parsedToken);
+  })
+
+  // .then( () => {
+  //   location = '/controls.html';
+  // })
+};
+
+// function reDirect() {
+//   window.location.href = `${window.location.href}controls`;
+// }
+
+const reDirect = (parsedToken) => {
+// function reDirect(parsedToken) {
+    $.ajax({
+      url: `${window.location.href}controls`,
+      method: 'GET',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', `Bearer ${parsedToken}`)
+      },
+      // data: {},
+      // success: function () { },
+      // error: function () { },
+    })
+    .then(results => {
+      // location = './controls.html';
+      console.log('Bearer resutls:', results);
+      return results;
+    })
+    console.log('red token:', parsedToken);
+  }
+  </script>
 </body>
 </html>
