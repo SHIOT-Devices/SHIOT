@@ -85,3 +85,4 @@ userSchema.methods.generateToken = function () {
 let User = mongoose.model('User', userSchema);
 
 module.exports = User;
+//

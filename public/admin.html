@@ -8,5 +8,96 @@
 </head>
 <body>
   <h1>Admin Page</h1>
+  <legend>
+    <label>
+      <button id="adminGetAll" type="submit">Get All Users</button>
+    </label>
+  </legend>
+  <legend>
+    <label>
+      <form id="adminGetOne">FIND USER FORM
+        <p>Token: </p>
+        <input type="text" id="find-user-token" placeholder="2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH">
+        <br>
+        <!-- <p>Password: </p>
+        <input type="password" id="find-password"><br> -->
+        <button type="submit">Find User</button>
+      </form>
+    </label>
+  </legend>
+  <legend>
+    <label>
+      <form id="adminAddUser">ADD USER FORM
+        <p>Username: </p>
+        <input type="text" name="add-username" placeholder="Username">
+        <br>
+        <p>Password: </p>
+        <input type="password" name="add-password" placeholder="Password">
+        <br>
+        <button type="submit">Add User</button>
+      </form>
+    </label>
+  </legend>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+  </script>
+  
+  <script>
+    'use strict';
+    console.log('JS adminGetAll Hit');
+    $('#adminGetAll').on('click', (event) => {
+      event.preventDefault();
+      console.log('hit!');
+      let parsedToken = JSON.parse(localStorage.token);
+      $.ajax({
+        url: `${window.location.href}api/admin`,
+        method: 'POST',
+        header: {
+          Authorization: `Bearer ${parsedToken}`
+        }
+      })
+      .then(results => {
+        document.body.innerHTML = results;
+      return results;
+        console.log(results)
+      })
+      // storage.getAll()
+      // .then(all => {
+      //   send(all);
+      //   console.log(all);
+      // });
+    });
+  </script>
+  
+  <script>
+    'use strict';
+    console.log('JS adminAddUser Hit');
+    $('#adminAddUser').on('submit', (event) => {
+      event.preventDefault();
+      console.log('EVENT', event.target);
+      const username = $('input[name=add-username]').val();
+      console.log('username', username);
+      const password = $('input[name=add-password]').val();
+      console.log('password', password);
+      let hash = btoa(`${username}:${password}`);
+      // let token = JSON.parse(localStorage.token)
+      signupFunction(hash);
+    });
+    const signupFunction = (hash, next) => {
+      $.ajax({
+        // url: 'http://localhost:3000/api/admin',
+        url: `${window.location.href}api/admin`,
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${hash}`
+        }
+      })
+        .then(results => {
+          console.log('results', results);
+          return results;
+          next();
+          // localStorage.token = JSON.stringify(results);
+        });
+    };
+  </script>
 </body>
 </html>
