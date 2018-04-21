@@ -50,7 +50,7 @@ can drive you nuts and waste your time on large projects.
 
 ### User Model
 Can you explain what the `findHash` property for the user model does? This looks like
-something taken fro
+something taken from watching videos from a daytime class.
 
 ## Testing
 Add the `coverage` directory to your `.gitignore`. It doesn't need to be
